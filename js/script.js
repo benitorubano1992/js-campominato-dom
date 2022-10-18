@@ -12,37 +12,49 @@ btnGenerator.addEventListener("click",function(){
 squareBox.innerHTML="";
 let flag=true;//valore booleano in cui controllo se posso continuare a giocare oppure no
 const numberLimit=convertSelectInput(selectInput.value);
-console.log(numberLimit);
 const bombArray=createRandomArray(numberLimit);// genero array di prova
 console.log(bombArray);
+const clickWin=numberLimit-bombArray.length;
+console.log(`numero di click devono essere : ${clickWin}`);
+const currentClickSquare=[];//array in cui vado a memorizzare i valori che ho cliccato
 const arrayLenght=convertSelectInput(selectInput.value);
 const arraySquare=createArray(arrayLenght);
 for(let i=0;i<arraySquare.length;i++){
 const nodeHtml=newHtmlElement(arraySquare[i],selectInput.value);
 nodeHtml.addEventListener("click",function(){
 if(flag){//verifico se posso continuare a giocare
-if(bombArray.includes(parseInt(this.textContent))){//verifico se l'array di bombe contiene il valore presente nel blocco sqaure    
-const squareList=document.getElementsByClassName("square-common");
-for(let i=0;i<squareList.length;i++){
-    const element=squareList[i];
-    for(let j=0;j<bombArray.length;j++){
-        if(parseInt(element.textContent) === bombArray[j])
-        element.classList.add("rosso");
+    if(bombArray.includes(parseInt(this.textContent))){//verifico se l'array di bombe contiene il valore presente nel blocco sqaure    
+    const squareList=document.getElementsByClassName("square-common");
+    for(let i=0;i<squareList.length;i++){
+        const element=squareList[i];
+        for(let j=0;j<bombArray.length;j++){
+            if(parseInt(element.textContent) === bombArray[j])
+                element.classList.add("rosso");
+                }
+            }
+    flag=false;
+    console.log(`hai perso hai cliccato un numero di volte pari a ${currentClickSquare.length},premendo in sequenza i valori ${currentClickSquare}`)
+}
+else if(currentClickSquare.length<clickWin){
+    if(!currentClickSquare.includes(this.textContent)){
+    this.classList.add("azzurro");
+    currentClickSquare.push((this.textContent));
+    console.log(currentClickSquare.length);
     }
+    if(currentClickSquare.length===clickWin){
+        console.log(`hai vinto, hai premuto  in sequenza i valori ${currentClickSquare}`)
+        console.log(currentClickSquare);
+        flag=false;
+    }
+    
 }
-flag=false;
+/*else if(currentClickSquare.length===clickWin){
+    console.log(`hai vinto, hai premuto  in sequenza i valori ${currentClickSquare}`)
+    console.log(currentClickSquare);
+    flag=false;
 }
-else
-this.classList.add("azzurro");
-
-
+*/
 }
-
-
-
-
-
-
 })
 squareBox.append(nodeHtml);
 }
@@ -96,9 +108,9 @@ if(classBasis==="difficolta-1"){
     classStructure= "square-1"
 }
 else if(classBasis==="difficolta-2")
-classStructure="square-2"
+    classStructure="square-2"
 else if(classBasis==="difficolta-3")
-classStructure="square-3"
+    classStructure="square-3"
 
 element.classList.add(classStructure);
 
