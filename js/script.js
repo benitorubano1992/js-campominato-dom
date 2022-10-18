@@ -19,7 +19,31 @@ const arrayLenght=convertSelectInput(selectInput.value);
 const arraySquare=createArray(arrayLenght);
 for(let i=0;i<arraySquare.length;i++){
 const nodeHtml=newHtmlElement(arraySquare[i],selectInput.value);
-nodeHtml.addEventListener("click",handleDivClick);//handleDivClick
+nodeHtml.addEventListener("click",function(){
+if(flag){//verifico se posso continuare a giocare
+if(bombArray.includes(parseInt(this.textContent))){//verifico se l'array di bombe contiene il valore presente nel blocco sqaure    
+const squareList=document.getElementsByClassName("square-common");
+for(let i=0;i<squareList.length;i++){
+    const element=squareList[i];
+    for(let j=0;j<bombArray.length;j++){
+        if(parseInt(element.textContent) === bombArray[j])
+        element.classList.add("rosso");
+    }
+}
+flag=false;
+}
+else
+this.classList.add("azzurro");
+
+
+}
+
+
+
+
+
+
+})
 squareBox.append(nodeHtml);
 }
 })
